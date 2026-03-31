@@ -44,6 +44,53 @@ This project shows:
 * Real-world orchestration using Airflow + Databricks
 
 
+
+## ⚠️ Common Issue & Fix – PySpark File Path (PATH_NOT_FOUND)
+
+### ❌ Problem
+
+Initially, the PySpark job was failing with a **PATH_NOT_FOUND** error.
+
+```python
+base_path = "data/raw"
+out_path = "data/output"
+````
+
+👉 Issue:
+
+* These are **relative paths**
+* Spark tries to read files from the **current execution directory**
+* But actual files were inside the project folder
+* Result: **PATH_NOT_FOUND error**
+
+---
+
+### ✅ Fix
+
+```python
+project_root = "Airflow-PySpark-SAP-FICO-Common-Key-Retrieval-Pipeline"
+base_path = f"{project_root}/data/raw"
+out_path = f"{project_root}/data/output"
+```
+
+### 💡 Explanation
+
+* Defined a **project root**
+* Built full paths using that root
+* Ensured Spark reads from the **correct location**
+
+### 🚀 Result
+
+* Spark successfully accessed:
+
+  * vendors
+  * GL accounts
+  * cost centers
+  * invoices
+  * payments
+* Pipeline executed successfully end-to-end ✅
+
+
 ## 📂 Project Structure
 
 Airflow-PySpark-SAP-FICO-Common-Key-Retrieval-Pipeline/
